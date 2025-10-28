@@ -68,7 +68,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       SizedBox(
-                        height: 180,
+                        height: 200,
                         child: PageView.builder(
                           controller: pageController,
                           itemCount: data.length,
@@ -111,6 +111,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         ),
                       ),
                       Row(
+                        mainAxisSize: MainAxisSize.min,
                         children: List.generate(
                           data.length,
                           (index) => AnimatedContainer(
@@ -125,6 +126,20 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
+                        ),
+                      ),
+                      SizedBox(height: 30),
+                      MaterialButton(
+                        onPressed: () {},
+                        color: red,
+                        height: 65,
+                        minWidth: 250,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        child: Text(
+                          'Get Started',
+                          style: TextStyle(color: Colors.white, fontSize: 18),
                         ),
                       ),
                     ],
