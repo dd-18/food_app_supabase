@@ -72,6 +72,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         child: PageView.builder(
                           controller: pageController,
                           itemCount: data.length,
+                          onPageChanged: (value) {
+                            setState(() {
+                              currentPage = value;
+                            });
+                          },
                           itemBuilder: (context, index) {
                             return Column(
                               children: [
