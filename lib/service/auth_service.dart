@@ -48,7 +48,7 @@ class AuthService {
         context,
       ).pushReplacement(MaterialPageRoute(builder: (_) => LoginScreen()));
     } catch (e) {
-      print("Error during logout: $e");
+      debugPrint("Error during logout: $e");
     }
   }
 }

@@ -15,8 +15,8 @@
 // }
 // List<FoodModel> foodProduct = [
 //   FoodModel(
-//     imageCard: 'assets/food-delivery/product/beef_burger.png',
-//     imageDetail: 'assets/food-delivery/product/beef_burger1.png',
+//     imageCard: 'https://mdzkqzqxivdclwbofpmn.supabase.co/storage/v1/object/public/food-delivery-image/beef_burger.png',
+//     imageDetail: 'https://mdzkqzqxivdclwbofpmn.supabase.co/storage/v1/object/public/food-delivery-image/beef_burger1.png',
 //     name: 'Beef Burger',
 //     price: 7.59,
 //     rate: 4.5,
@@ -24,8 +24,8 @@
 //     category: 'Burger'
 //   ),
 //   FoodModel(
-//     imageCard: 'assets/food-delivery/product/double_burger.png',
-//     imageDetail: 'assets/food-delivery/product/double_burger1.png',
+//     imageCard: 'https://mdzkqzqxivdclwbofpmn.supabase.co/storage/v1/object/public/food-delivery-image/double_burger.png',
+//     imageDetail: 'https://mdzkqzqxivdclwbofpmn.supabase.co/storage/v1/object/public/food-delivery-image/double_burger1.png',
 //     name: 'Double Burger',
 //     price: 10.0,
 //     rate: 4.9,
@@ -33,8 +33,8 @@
 //     category: 'Burger'
 //   ),
 //   FoodModel(
-//     imageCard: 'assets/food-delivery/product/cheese-burger.png',
-//     imageDetail: 'assets/food-delivery/product/cheese-burger1.png',
+//     imageCard: 'https://mdzkqzqxivdclwbofpmn.supabase.co/storage/v1/object/public/food-delivery-image/cheese-burger.png',
+//     imageDetail: 'https://mdzkqzqxivdclwbofpmn.supabase.co/storage/v1/object/public/food-delivery-image/cheese-burger1.png',
 //     name: 'Cheese Burger',
 //     price: 8.88,
 //     rate: 4.8,
@@ -42,8 +42,8 @@
 //     category: 'Burger',
 //   ),
 //   FoodModel(
-//     imageCard: 'assets/food-delivery/product/bacon_burger.png',
-//     imageDetail: 'assets/food-delivery/product/bacon_burger1.png',
+//     imageCard: 'https://mdzkqzqxivdclwbofpmn.supabase.co/storage/v1/object/public/food-delivery-image/bacon_burger.png',
+//     imageDetail: 'https://mdzkqzqxivdclwbofpmn.supabase.co/storage/v1/object/public/food-delivery-image/bacon_burger1.png',
 //     name: 'Bacon Burger',
 //     price: 9.99,
 //     rate: 5.0,
@@ -51,8 +51,8 @@
 //     category: 'Burger'
 //   ),
 //   FoodModel(
-//     imageCard: 'assets/food-delivery/product/pizza111.png',
-//     imageDetail: 'assets/food-delivery/product/pizza.png',
+//     imageCard: 'https://mdzkqzqxivdclwbofpmn.supabase.co/storage/v1/object/public/food-delivery-image/bacon_burger1.png',
+//     imageDetail: 'https://mdzkqzqxivdclwbofpmn.supabase.co/storage/v1/object/public/food-delivery-image/pizza.png',
 //     name: 'Chicken Pizza',
 //     price: 19.99,
 //     rate: 4.0,
@@ -60,8 +60,8 @@
 //     category: 'Pizza'
 //   ),
 //    FoodModel(
-//     imageCard: 'assets/food-delivery/product/cup_cake.png',
-//     imageDetail: 'assets/food-delivery/product/cup-cake1.png',
+//     imageCard: 'https://mdzkqzqxivdclwbofpmn.supabase.co/storage/v1/object/public/food-delivery-image/cup_cake.png',
+//     imageDetail: 'https://mdzkqzqxivdclwbofpmn.supabase.co/storage/v1/object/public/food-delivery-image/cup-cake1.png',
 //     name: 'Cream Cake',
 //     price: 5.99,
 //     rate: 4.7,
@@ -70,7 +70,6 @@
 //   ),
 // ];
 // i have a csv file of this sample data, i will upload this csv file in my supabase project,
-
 
 var desc =
     "This is a special types of items, often served with cheese, lettuce, tomato, onion, pickles, bacon, or chilies; condiments such as ketchup, mustard, mayonnaise, relish, or a 'specialItems sauce', often a variation of Thousand Island dressing; and are frequently placed on sesame seed buns.";
@@ -106,18 +105,18 @@ class FoodModel {
   factory FoodModel.fromJson(Map<String, dynamic> json) {
     return FoodModel(
       id: json['id'] ?? "",
-      imageCard: json['imageCard'] ?? "",
-      imageDetail: json['imageDetail'] ?? "",
+      imageCard: (json['imageCard'] as String? ?? '').trim(),
+      imageDetail: (json['imageDetail'] as String? ?? '').trim(),
       name: json['name'] ?? 'Unknown',
       price: (json['price'] as num?)?.toDouble() ?? 0.0,
       rate: (json['rate'] as num?)?.toDouble() ?? 0.0,
       specialItems: json['specialItems'] ?? '',
       category: json['category'] ?? '',
-      kcal: json['kcal'] ?? '',
-      time: json['time']??''
+      kcal: int.tryParse(json['kcal']?.toString() ?? '') ?? 0,
+      time: json['time'] ?? '',
     );
   }
-   Map<String, dynamic> toMap() {
+  Map<String, dynamic> toMap() {
     return {
       'id': id,
       'imageCard': imageCard,

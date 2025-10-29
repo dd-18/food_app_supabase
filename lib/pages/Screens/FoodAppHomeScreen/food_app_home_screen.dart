@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:food_app_supabase/Core/Utils/consts.dart';
 import 'package:food_app_supabase/Core/models/categories_model.dart';
-import 'package:food_app_supabase/pages/Screens/FoodAppHomeScreen/widgets/Build_product_section.dart';
 import 'package:food_app_supabase/pages/Screens/FoodAppHomeScreen/widgets/view_all.dart';
+import 'package:food_app_supabase/widgets/products_items_display.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
+import '../../../Core/models/product_model.dart';
 
 class FoodAppHomeScreen extends StatefulWidget {
   const FoodAppHomeScreen({super.key});
@@ -14,6 +16,7 @@ class FoodAppHomeScreen extends StatefulWidget {
 
 class _FoodAppHomeScreenState extends State<FoodAppHomeScreen> {
   late Future<List<CategoryModel>> futureCategories = fetchCategories();
+  late Future<List<FoodModel>> futureFoodProducts = Future.value([]);
   List<CategoryModel> categories = [];
   String? selectedCategory;
 
@@ -30,10 +33,28 @@ class _FoodAppHomeScreenState extends State<FoodAppHomeScreen> {
         setState(() {
           this.categories = categories;
           selectedCategory = categories.first.name;
+
+          futureFoodProducts = fetchFoodProduct(selectedCategory!);
         });
       }
     } catch (e) {
-      print("Initialization Error: $e");
+      debugPrint("Initialization Error: $e");
+    }
+  }
+
+  Future<List<FoodModel>> fetchFoodProduct(String category) async {
+    try {
+      final response = await Supabase.instance.client
+          .from('food_product')
+          .select()
+          .eq('category', category);
+
+      return (response as List)
+          .map((json) => FoodModel.fromJson(json))
+          .toList();
+    } catch (e) {
+      debugPrint("Error Fetching Product: $e");
+      return [];
     }
   }
 
@@ -47,7 +68,7 @@ class _FoodAppHomeScreenState extends State<FoodAppHomeScreen> {
           .map((json) => CategoryModel.fromJson(json))
           .toList();
     } catch (e) {
-      print("Error Fetching Categories: $e");
+      debugPrint("Error Fetching Categories: $e");
       return [];
     }
   }
@@ -77,8 +98,41 @@ class _FoodAppHomeScreenState extends State<FoodAppHomeScreen> {
           SizedBox(height: 25),
           ViewAll(),
           SizedBox(height: 25),
-          BuildProductSection(),
+          _buildProductSection(),
         ],
+      ),
+    );
+  }
+
+  Widget _buildProductSection() {
+    return Expanded(
+      child: FutureBuilder<List<FoodModel>>(
+        future: futureFoodProducts,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
+          if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          }
+          final products = snapshot.data ?? [];
+          if (products.isEmpty) {
+            return Center(child: Text('No products found.'));
+          }
+          return ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: products.length,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: EdgeInsets.only(
+                  left: index == 0 ? 25 : 0,
+                  right: index == products.length - 1 ? 25 : 0,
+                ),
+                child: ProductsItemsDisplay(foodModel: products[index]),
+              );
+            },
+          );
+        },
       ),
     );
   }
@@ -263,6 +317,7 @@ class _FoodAppHomeScreenState extends State<FoodAppHomeScreen> {
     if (selectedCategory != category) {
       setState(() {
         selectedCategory = category;
+        futureFoodProducts = fetchFoodProduct(category);
       });
     }
   }
