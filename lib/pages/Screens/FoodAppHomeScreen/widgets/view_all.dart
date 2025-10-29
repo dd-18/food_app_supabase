@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_app_supabase/pages/Screens/view_all_product_screen.dart';
 
 import '../../../../Core/Utils/consts.dart';
 
@@ -16,7 +17,13 @@ class ViewAll extends StatelessWidget {
             'Popular Now',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800),
           ),
-          GestureDetector(
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => ViewAllProductScreen()),
+              );
+            },
             child: Row(
               children: [
                 Text(

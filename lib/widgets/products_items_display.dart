@@ -13,19 +13,17 @@ class ProductsItemsDisplay extends StatefulWidget {
 class _ProductsItemsDisplayState extends State<ProductsItemsDisplay> {
   @override
   Widget build(BuildContext context) {
-    // This widget is built to fit the parent's constraints (w:140, h:179.7)
     return GestureDetector(
       onTap: () {},
       child: SizedBox(
         width: 140,
-        height: 179.7, // Fit within the exact constraint from the error log
+        height: 179.7,
         child: Stack(
-          clipBehavior: Clip.none, // Allows the image to overflow visually
+          clipBehavior: Clip.none,
           alignment: Alignment.bottomCenter,
           children: [
-            // Card with text content
             Container(
-              height: 150, // Set to be less than the max height
+              height: 150,
               width: 140,
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -42,7 +40,6 @@ class _ProductsItemsDisplayState extends State<ProductsItemsDisplay> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  // This SizedBox creates space for the image to overlap
                   const SizedBox(height: 50),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -65,39 +62,39 @@ class _ProductsItemsDisplayState extends State<ProductsItemsDisplay> {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontSize: 11,
-                        color: Colors.grey,
-                      ),
+                      style: const TextStyle(fontSize: 11, color: Colors.grey),
                     ),
                   ),
                   const SizedBox(height: 6),
                   RichText(
                     text: TextSpan(
                       style: const TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.black),
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
                       children: [
                         TextSpan(
-                          text: "\$",
+                          text: "\$ ",
                           style: TextStyle(fontSize: 12, color: red),
                         ),
                         TextSpan(
                           text: widget.foodModel.price.toStringAsFixed(2),
-                          style: const TextStyle(fontSize: 18),
+                          style: const TextStyle(
+                            fontSize: 18,
+                            letterSpacing: -0.5,
+                          ),
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 12), // Bottom padding
+                  const SizedBox(height: 12),
                 ],
               ),
             ),
-
-            // The image that pops out of the top
             Positioned(
-              top: -25, // Positioned above the card
+              top: 20,
               child: Image.network(
-                widget.foodModel.imageCard.trim(), // Trim whitespace from URL
+                widget.foodModel.imageCard.trim(),
                 height: 100,
                 width: 100,
                 fit: BoxFit.contain,
@@ -105,6 +102,20 @@ class _ProductsItemsDisplayState extends State<ProductsItemsDisplay> {
                   height: 100,
                   width: 100,
                   child: Icon(Icons.fastfood, color: Colors.grey, size: 50),
+                ),
+              ),
+            ),
+            Positioned(
+              top: 10,
+              right: 10,
+              child: GestureDetector(
+                child: CircleAvatar(
+                  radius: 15,
+                  backgroundColor: Colors.red[100],
+                  child: Image.asset(
+                    'assets/food-delivery/icon/fire.png',
+                    height: 22,
+                  ),
                 ),
               ),
             ),

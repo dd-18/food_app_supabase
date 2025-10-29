@@ -78,56 +78,67 @@ class _FoodAppHomeScreenState extends State<FoodAppHomeScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: appBarParts(),
-      body: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                appBanner(),
-                SizedBox(height: 25),
-                Text(
-                  'Categories',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800),
-                ),
-              ],
+      body: SingleChildScrollView(
+        clipBehavior: Clip.none,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  appBanner(),
+                  const SizedBox(height: 25),
+                  const Text(
+                    'Categories',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800),
+                  ),
+                ],
+              ),
             ),
-          ),
-          _buildCategoryList(),
-          SizedBox(height: 25),
-          ViewAll(),
-          SizedBox(height: 25),
-          _buildProductSection(),
-        ],
+            _buildCategoryList(),
+            const SizedBox(height: 25),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15.0),
+              child: ViewAll(),
+            ),
+            const SizedBox(height: 10),
+            _buildProductSection(),
+            const SizedBox(height: 50),
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildProductSection() {
-    return Expanded(
+    return SizedBox(
+      height: 200,
       child: FutureBuilder<List<FoodModel>>(
         future: futureFoodProducts,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
           if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           }
           final products = snapshot.data ?? [];
           if (products.isEmpty) {
-            return Center(child: Text('No products found.'));
+            return const Center(child: Text('No products found.'));
           }
           return ListView.builder(
             scrollDirection: Axis.horizontal,
+            clipBehavior: Clip.none,
             itemCount: products.length,
+            padding: const EdgeInsets.symmetric(horizontal: 15),
             itemBuilder: (context, index) {
               return Padding(
                 padding: EdgeInsets.only(
-                  left: index == 0 ? 25 : 0,
+                  left: 25,
                   right: index == products.length - 1 ? 25 : 0,
-                ),
+                ), // Spacing
                 child: ProductsItemsDisplay(foodModel: products[index]),
               );
             },
@@ -143,23 +154,23 @@ class _FoodAppHomeScreenState extends State<FoodAppHomeScreen> {
       elevation: 0,
       centerTitle: true,
       actions: [
-        SizedBox(width: 25),
+        const SizedBox(width: 25),
         Container(
           height: 45,
           width: 45,
-          padding: EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
             color: grey1,
             borderRadius: BorderRadius.circular(10),
           ),
           child: Image.asset('assets/food-delivery/icon/dash.png'),
         ),
-        Spacer(),
+        const Spacer(),
         Row(
           children: [
             Icon(Icons.location_on_outlined, color: red, size: 18),
-            SizedBox(width: 5),
-            Text(
+            const SizedBox(width: 5),
+            const Text(
               'Rajkot, Gujarat',
               style: TextStyle(
                 fontSize: 16,
@@ -167,26 +178,26 @@ class _FoodAppHomeScreenState extends State<FoodAppHomeScreen> {
                 color: Colors.black,
               ),
             ),
-            SizedBox(width: 5),
-            Icon(
+            const SizedBox(width: 5),
+            const Icon(
               Icons.keyboard_arrow_down_rounded,
               color: Colors.orange,
               size: 18,
             ),
           ],
         ),
-        Spacer(),
+        const Spacer(),
         Container(
           height: 45,
           width: 45,
-          padding: EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
             color: grey1,
             borderRadius: BorderRadius.circular(10),
           ),
           child: Image.asset('assets/food-delivery/profile.png'),
         ),
-        SizedBox(width: 25),
+        const SizedBox(width: 25),
       ],
     );
   }
@@ -198,19 +209,22 @@ class _FoodAppHomeScreenState extends State<FoodAppHomeScreen> {
         color: imageBackground,
         borderRadius: BorderRadius.circular(20),
       ),
-      padding: EdgeInsets.only(top: 25, right: 25, left: 25),
+      padding: const EdgeInsets.only(top: 25, right: 25, left: 25),
       child: Row(
         children: [
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 RichText(
                   text: TextSpan(
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                    ),
                     children: [
-                      TextSpan(
+                      const TextSpan(
                         text: 'The Fastest In Delivery',
                         style: TextStyle(color: Colors.black),
                       ),
@@ -221,14 +235,17 @@ class _FoodAppHomeScreenState extends State<FoodAppHomeScreen> {
                     ],
                   ),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Container(
                   decoration: BoxDecoration(
                     color: red,
                     borderRadius: BorderRadius.circular(30),
                   ),
-                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 9),
-                  child: Text(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 15,
+                    vertical: 9,
+                  ),
+                  child: const Text(
                     'Order Now',
                     style: TextStyle(color: Colors.white),
                   ),
@@ -243,30 +260,36 @@ class _FoodAppHomeScreenState extends State<FoodAppHomeScreen> {
   }
 
   Widget _buildCategoryList() {
-    return FutureBuilder(
-      future: futureCategories,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
-        }
-        if (snapshot.hasError || !snapshot.hasData || snapshot.data!.isEmpty) {
-          return SizedBox.shrink();
-        }
-        return SizedBox(
-          height: 60,
-          child: ListView.builder(
+    return SizedBox(
+      height: 60,
+      child: FutureBuilder(
+        future: futureCategories,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (snapshot.hasError ||
+              !snapshot.hasData ||
+              snapshot.data!.isEmpty) {
+            return const SizedBox.shrink();
+          }
+          return ListView.builder(
             scrollDirection: Axis.horizontal,
-            physics: BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             itemCount: categories.length,
+            padding: const EdgeInsets.symmetric(horizontal: 15),
             itemBuilder: (context, index) {
               final category = categories[index];
 
               return Padding(
-                padding: EdgeInsets.only(left: index == 0 ? 15 : 0, right: 15),
+                padding: const EdgeInsets.only(right: 15),
                 child: GestureDetector(
                   onTap: () => handleCategoryTap(category.name),
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 10,
+                    ),
                     decoration: BoxDecoration(
                       color: selectedCategory == category.name ? red : grey1,
                       borderRadius: BorderRadius.circular(30),
@@ -274,7 +297,7 @@ class _FoodAppHomeScreenState extends State<FoodAppHomeScreen> {
                     child: Row(
                       children: [
                         Container(
-                          padding: EdgeInsets.all(8),
+                          padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
                             color: selectedCategory == category.name
                                 ? Colors.white
@@ -286,11 +309,11 @@ class _FoodAppHomeScreenState extends State<FoodAppHomeScreen> {
                             width: 30,
                             height: 30,
                             errorBuilder: (context, error, stackTrace) {
-                              return Icon(Icons.fastfood);
+                              return const Icon(Icons.fastfood);
                             },
                           ),
                         ),
-                        SizedBox(width: 10),
+                        const SizedBox(width: 10),
                         Text(
                           category.name,
                           style: TextStyle(
@@ -307,9 +330,9 @@ class _FoodAppHomeScreenState extends State<FoodAppHomeScreen> {
                 ),
               );
             },
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 
