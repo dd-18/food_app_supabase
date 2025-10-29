@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_app_supabase/pages/Screens/app_main_screen.dart';
-import 'package:food_app_supabase/pages/Screens/onboarding_screen.dart';
 import 'package:food_app_supabase/pages/auth/login_screen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
-import 'pages/Screens/profile_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
