@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:food_app_supabase/service/auth_service.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _ProfileScreenState extends State<ProfileScreen> {
   AuthService authService = AuthService();
   @override
   Widget build(BuildContext context) {

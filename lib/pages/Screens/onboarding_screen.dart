@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_app_supabase/Core/Utils/consts.dart';
+import 'package:food_app_supabase/pages/Screens/app_main_screen.dart';
 
 import '../../Core/models/on_bording_model.dart';
 
@@ -33,24 +34,24 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               ),
             ),
             Positioned(
-              top: -80,
+              top: -70,
               left: 0,
               right: 0,
               child: Image.asset('assets/food-delivery/chef.png'),
             ),
             Positioned(
               top: 80,
-              right: 30,
+              right: 50,
               child: Image.asset('assets/food-delivery/leaf.png', width: 80),
             ),
             Positioned(
-              top: 300,
+              top: 270,
               right: 10,
               child: Image.asset('assets/food-delivery/chili.png', width: 80),
             ),
             Positioned(
-              top: 290,
-              left: 0,
+              top: 60,
+              left: 20,
               child: Image.asset(
                 'assets/food-delivery/ginger.png',
                 height: 90,
@@ -60,6 +61,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             Align(
               alignment: Alignment.bottomCenter,
               child: ClipPath(
+                clipper: CustomClip(),
                 child: Container(
                   color: Colors.white,
                   padding: EdgeInsets.symmetric(horizontal: 50, vertical: 75),
@@ -68,7 +70,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       SizedBox(
-                        height: 200,
+                        height: 130,
                         child: PageView.builder(
                           controller: pageController,
                           itemCount: data.length,
@@ -85,7 +87,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                   text: TextSpan(
                                     style: TextStyle(
                                       color: Colors.black,
-                                      fontSize: 35,
+                                      fontSize: 30,
                                       fontWeight: FontWeight.bold,
                                     ),
                                     children: [
@@ -100,7 +102,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                     ],
                                   ),
                                 ),
-                                SizedBox(height: 20),
+                                SizedBox(height: 10),
                                 Text(
                                   data[index]['description']!,
                                   textAlign: TextAlign.center,
@@ -115,6 +117,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           },
                         ),
                       ),
+                      SizedBox(height: 10),
+                      //slider indicator
                       Row(
                         mainAxisSize: MainAxisSize.min,
                         children: List.generate(
@@ -127,15 +131,22 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             decoration: BoxDecoration(
                               color: currentPage == index
                                   ? Colors.orange
-                                  : Colors.grey,
+                                  : Colors.grey[300],
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
                         ),
                       ),
-                      SizedBox(height: 30),
+                      SizedBox(height: 20),
                       MaterialButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => AppMainScreen(),
+                            ),
+                          );
+                        },
                         color: red,
                         height: 65,
                         minWidth: 250,
@@ -156,5 +167,24 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         ),
       ),
     );
+  }
+}
+
+class CustomClip extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    Path path = Path();
+    path.lineTo(0, 30);
+    path.lineTo(0, size.height);
+    path.lineTo(size.width, size.height);
+    path.lineTo(size.width, 30);
+    path.quadraticBezierTo(size.width / 2, -30, 0, 30);
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
+    return false;
   }
 }
