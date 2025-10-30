@@ -1,20 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_app_supabase/Core/Provider/favorite_provider.dart';
 import 'package:food_app_supabase/Core/Utils/consts.dart';
 import 'package:food_app_supabase/Core/models/product_model.dart';
+import 'package:food_app_supabase/pages/Screens/food_detail_screen.dart';
 
-class ProductsItemsDisplay extends StatefulWidget {
+class ProductsItemsDisplay extends ConsumerWidget {
   final FoodModel foodModel;
   const ProductsItemsDisplay({super.key, required this.foodModel});
 
   @override
-  State<ProductsItemsDisplay> createState() => _ProductsItemsDisplayState();
-}
-
-class _ProductsItemsDisplayState extends State<ProductsItemsDisplay> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final provider = ref.watch(favoriteProvider);
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            transitionDuration: const Duration(seconds: 1),
+            pageBuilder: (_, __, ___) => FoodDetailScreen(product: foodModel),
+          ),
+        );
+      },
       child: SizedBox(
         width: 140,
         height: 179.7,
@@ -23,7 +30,7 @@ class _ProductsItemsDisplayState extends State<ProductsItemsDisplay> {
           alignment: Alignment.bottomCenter,
           children: [
             Container(
-              height: 150,
+              height: 155,
               width: 140,
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -39,12 +46,13 @@ class _ProductsItemsDisplayState extends State<ProductsItemsDisplay> {
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const SizedBox(height: 50),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: Text(
-                      widget.foodModel.name,
+                      foodModel.name,
                       maxLines: 1,
                       textAlign: TextAlign.center,
                       overflow: TextOverflow.ellipsis,
@@ -58,7 +66,7 @@ class _ProductsItemsDisplayState extends State<ProductsItemsDisplay> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: Text(
-                      widget.foodModel.specialItems,
+                      foodModel.specialItems,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.center,
@@ -67,6 +75,7 @@ class _ProductsItemsDisplayState extends State<ProductsItemsDisplay> {
                   ),
                   const SizedBox(height: 6),
                   RichText(
+                    textAlign: TextAlign.center,
                     text: TextSpan(
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
@@ -78,7 +87,7 @@ class _ProductsItemsDisplayState extends State<ProductsItemsDisplay> {
                           style: TextStyle(fontSize: 12, color: red),
                         ),
                         TextSpan(
-                          text: widget.foodModel.price.toStringAsFixed(2),
+                          text: foodModel.price.toStringAsFixed(2),
                           style: const TextStyle(
                             fontSize: 18,
                             letterSpacing: -0.5,
@@ -87,21 +96,23 @@ class _ProductsItemsDisplayState extends State<ProductsItemsDisplay> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 12),
                 ],
               ),
             ),
             Positioned(
-              top: 20,
-              child: Image.network(
-                widget.foodModel.imageCard.trim(),
-                height: 100,
-                width: 100,
-                fit: BoxFit.contain,
-                errorBuilder: (context, error, stackTrace) => const SizedBox(
+              top: 15,
+              child: Hero(
+                tag: foodModel.imageCard,
+                child: Image.network(
+                  foodModel.imageCard.trim(),
                   height: 100,
                   width: 100,
-                  child: Icon(Icons.fastfood, color: Colors.grey, size: 50),
+                  fit: BoxFit.contain,
+                  errorBuilder: (context, error, stackTrace) => const SizedBox(
+                    height: 100,
+                    width: 100,
+                    child: Icon(Icons.fastfood, color: Colors.grey, size: 50),
+                  ),
                 ),
               ),
             ),
@@ -109,13 +120,24 @@ class _ProductsItemsDisplayState extends State<ProductsItemsDisplay> {
               top: 10,
               right: 10,
               child: GestureDetector(
+                onTap: () {
+                  ref.read(favoriteProvider).toggleFavorite(foodModel.name);
+                },
                 child: CircleAvatar(
                   radius: 15,
-                  backgroundColor: Colors.red[100],
-                  child: Image.asset(
-                    'assets/food-delivery/icon/fire.png',
-                    height: 22,
-                  ),
+                  backgroundColor: provider.isExist(foodModel.name)
+                      ? Colors.red[100]
+                      : Colors.transparent,
+                  child: provider.isExist(foodModel.name)
+                      ? Image.asset(
+                          'assets/food-delivery/icon/fire.png',
+                          height: 22,
+                        )
+                      : const Icon(
+                          Icons.local_fire_department,
+                          color: red,
+                          size: 20,
+                        ),
                 ),
               ),
             ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_app_supabase/Core/models/product_model.dart';
+import 'package:food_app_supabase/widgets/products_items_display.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ViewAllProductScreen extends StatefulWidget {
@@ -41,10 +42,27 @@ class _ViewAllProductScreenState extends State<ViewAllProductScreen> {
     return Scaffold(
       backgroundColor: Colors.blue[50],
       appBar: AppBar(
-        title: Text('All Products'),
+        title: Text(
+          'All Products',
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+        ),
         backgroundColor: Colors.blue[50],
+        forceMaterialTransparency: true,
         centerTitle: true,
       ),
+      body: isLoading
+          ? Center(child: CircularProgressIndicator())
+          : GridView.builder(
+              itemCount: products.length,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 10.0,
+                mainAxisSpacing: 10.0,
+              ),
+              itemBuilder: (context, index) {
+                return ProductsItemsDisplay(foodModel: products[index]);
+              },
+            ),
     );
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:food_app_supabase/Core/Utils/consts.dart';
 import 'package:food_app_supabase/pages/Screens/FoodAppHomeScreen/food_app_home_screen.dart';
+import 'package:food_app_supabase/pages/Screens/User_Activity/favorite_screen.dart';
 import 'package:food_app_supabase/pages/Screens/profile_screen.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -16,6 +17,7 @@ class _AppMainScreenState extends State<AppMainScreen> {
   int currentIndex = 0;
   final List<Widget> _pages = [
     FoodAppHomeScreen(),
+    FavoriteScreen(),
     Scaffold(),
     ProfileScreen(),
     Scaffold(),
