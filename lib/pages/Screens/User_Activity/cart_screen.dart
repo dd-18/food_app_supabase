@@ -20,7 +20,7 @@ class CartScreen extends ConsumerWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         forceMaterialTransparency: true,
-        // elevation: 0,
+        elevation: 0,
         title: const Text('Your Cart'),
       ),
       body: cart.items.isEmpty
@@ -44,7 +44,7 @@ class CartScreen extends ConsumerWidget {
                             items.productData['imageCard'],
                             width: 60,
                             height: 60,
-                            fit: BoxFit.cover,
+                            fit: BoxFit.contain,
                           ),
                           title: Text(
                             items.productData['name'],

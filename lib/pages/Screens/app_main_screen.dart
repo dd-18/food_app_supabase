@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_app_supabase/Core/Provider/cart_provider.dart';
 import 'package:food_app_supabase/Core/Utils/consts.dart';
 import 'package:food_app_supabase/pages/Screens/FoodAppHomeScreen/food_app_home_screen.dart';
 import 'package:food_app_supabase/pages/Screens/User_Activity/favorite_screen.dart';
@@ -8,14 +10,14 @@ import 'package:iconsax/iconsax.dart';
 
 import 'User_Activity/cart_screen.dart';
 
-class AppMainScreen extends StatefulWidget {
+class AppMainScreen extends ConsumerStatefulWidget {
   const AppMainScreen({super.key});
 
   @override
-  State<AppMainScreen> createState() => _AppMainScreenState();
+  ConsumerState<AppMainScreen> createState() => _AppMainScreenState();
 }
 
-class _AppMainScreenState extends State<AppMainScreen> {
+class _AppMainScreenState extends ConsumerState<AppMainScreen> {
   int currentIndex = 0;
   final List<Widget> _pages = [
     FoodAppHomeScreen(),
@@ -25,6 +27,7 @@ class _AppMainScreenState extends State<AppMainScreen> {
   ];
   @override
   Widget build(BuildContext context) {
+    CartProvider cp = ref.watch(cartProvider);
     return SafeArea(
       top: false,
       child: Scaffold(
@@ -46,13 +49,12 @@ class _AppMainScreenState extends State<AppMainScreen> {
                 children: [
                   _buildNavItems(Iconsax.shopping_cart, 'D', 3),
                   Positioned(
-                    top: 16,
                     right: -10,
                     child: CircleAvatar(
                       radius: 10,
                       backgroundColor: red,
                       child: Text(
-                        '0',
+                        cp.items.length.toString(),
                         style: TextStyle(color: Colors.white, fontSize: 12),
                       ),
                     ),

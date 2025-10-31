@@ -12,7 +12,9 @@ class FavoriteProvider extends ChangeNotifier {
   final SupabaseClient _supabaseClient = Supabase.instance.client;
   List<String> get favorite => _favoriteIds;
   String? get userId => _supabaseClient.auth.currentUser?.id;
-  FavoriteProvider() {}
+  FavoriteProvider() {
+    loadFavorites();
+  }
   void reset() {
     _favoriteIds = [];
     notifyListeners();

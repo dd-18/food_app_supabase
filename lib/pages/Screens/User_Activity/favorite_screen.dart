@@ -77,7 +77,7 @@ class _FavoriteScreenState extends ConsumerState<FavoriteScreen> {
                                 child: Row(
                                   children: [
                                     Container(
-                                      width: 110,
+                                      width: 90,
                                       height: 90,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(20),
