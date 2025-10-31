@@ -2,7 +2,7 @@ class CartItem {
   final String id;
   final String productId;
   final Map<String, dynamic> productData;
-  final int quantity;
+  int quantity;
   final String userId;
 
   CartItem({
@@ -16,10 +16,10 @@ class CartItem {
   factory CartItem.fromMap(Map<String, dynamic> map) {
     return CartItem(
       id: map['id'] ?? '',
-      productId: map['productId'] ?? '',
-      productData: Map<String, dynamic>.from(map['productData'] ?? {}),
-      quantity: map['quantity'] ?? '',
-      userId: map['userId'] ?? '',
+      productId: map['product_id'] ?? '',
+      productData: Map<String, dynamic>.from(map['product_data'] ?? {}),
+      quantity: map['quantity'] ?? 0,
+      userId: map['user_id'] ?? '',
     );
   }
 }
