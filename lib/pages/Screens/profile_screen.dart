@@ -3,10 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_app_supabase/Core/Provider/favorite_provider.dart';
 import 'package:food_app_supabase/service/auth_service.dart';
 
+import '../../Core/Provider/cart_provider.dart';
+
 AuthService authService = AuthService();
 
 class ProfileScreen extends ConsumerWidget {
-  ProfileScreen({super.key});
+  const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -20,6 +22,7 @@ class ProfileScreen extends ConsumerWidget {
               onPressed: () {
                 authService.logout(context);
                 ref.invalidate(favoriteProvider);
+                ref.invalidate(cartProvider);
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.red,

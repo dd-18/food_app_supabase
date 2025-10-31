@@ -6,6 +6,8 @@ import 'package:food_app_supabase/pages/Screens/User_Activity/favorite_screen.da
 import 'package:food_app_supabase/pages/Screens/profile_screen.dart';
 import 'package:iconsax/iconsax.dart';
 
+import 'User_Activity/cart_screen.dart';
+
 class AppMainScreen extends StatefulWidget {
   const AppMainScreen({super.key});
 
@@ -18,9 +20,8 @@ class _AppMainScreenState extends State<AppMainScreen> {
   final List<Widget> _pages = [
     FoodAppHomeScreen(),
     FavoriteScreen(),
-    Scaffold(),
     ProfileScreen(),
-    Scaffold(),
+    CartScreen(),
   ];
   @override
   Widget build(BuildContext context) {

@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_app_supabase/Core/Provider/cart_provider.dart';
 import 'package:food_app_supabase/Core/Utils/consts.dart';
 import 'package:food_app_supabase/Core/models/product_model.dart';
 import 'package:readmore/readmore.dart';
 
-class FoodDetailScreen extends StatefulWidget {
+import '../../widgets/snack_bar.dart';
+
+class FoodDetailScreen extends ConsumerStatefulWidget {
   final FoodModel product;
   const FoodDetailScreen({super.key, required this.product});
 
   @override
-  State<FoodDetailScreen> createState() => _FoodDetailScreenState();
+  ConsumerState<FoodDetailScreen> createState() => _FoodDetailScreenState();
 }
 
-class _FoodDetailScreenState extends State<FoodDetailScreen> {
+class _FoodDetailScreenState extends ConsumerState<FoodDetailScreen> {
   int quantity = 1;
 
   @override
@@ -195,7 +199,17 @@ class _FoodDetailScreenState extends State<FoodDetailScreen> {
         elevation: 0,
         backgroundColor: Colors.transparent,
         label: MaterialButton(
-          onPressed: () {},
+          onPressed: () async {
+            await ref
+                .read(cartProvider)
+                .addCart(widget.product.name, widget.product.toMap(), quantity);
+            showSnackBar(
+              context,
+              '${widget.product.name} added to cart',
+              Colors.green,
+            );
+            print('${widget.product.name} added to cart}');
+          },
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(40),
           ),

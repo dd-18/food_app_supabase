@@ -20,6 +20,7 @@ class _FavoriteScreenState extends ConsumerState<FavoriteScreen> {
     final userId = supabase.auth.currentUser?.id;
     final provider = ref.watch(favoriteProvider);
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         centerTitle: true,
